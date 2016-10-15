@@ -78,11 +78,11 @@ scheb_two_factor:
         auth_code: _auth_code
         trusted: _trusted
 
-    email:
-        enabled: false
-
     google:
         enabled: true
         server_name: example.com
         issuer: auth_project
         template: security/google_2fa.html.twig
+
+    email:
+        enabled: false
