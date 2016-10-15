@@ -1,0 +1,30 @@
+{% extends '::base.html.twig' %}
+
+{% block base_html_body_header_inner %}
+    <h1>Two Factor Authentication</h1>
+{% endblock %}
+
+{% block base_html_body_content_inner %}
+    <form method="post">
+        {% for flashMessage in app.session.flashbag.get("two_factor") %}
+            <p class="error">{{ flashMessage|trans }}</p>
+        {% endfor %}
+        <fieldset>
+            <legend>Second Factor</legend>
+            <div class="input-row">
+                <label for="auth_code">Authentication code</label>
+                <input type="text" id="auth_code" name="_auth_code">
+            </div>
+            {% if useTrustedOption %}
+                <div class="input-row">
+                    <label for="trusted">Trust this computer</label>
+                    <input type="checkbox" id="trusted" name="_trusted">
+                </div>
+            {% endif %}
+            <div class="input-row">
+                <button type="submit">Authenticate</button>
+            </div>
+        </fieldset>
+        <a href="{{ path('security_logout') }}">Cancel</a>
+    </form>
+{% endblock %}

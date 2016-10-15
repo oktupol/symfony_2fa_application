@@ -11,6 +11,10 @@
             <td>{{ user.username }}</td>
         </tr>
         <tr>
+            <td>Password</td>
+            <td>{{ user.password }}</td>
+        </tr>
+        <tr>
             <td>Active</td>
             <td>{% if user.enabled %}yes{% else %}no{% endif %}</td>
         </tr>
@@ -47,4 +51,5 @@
             <td>{{ user.u2fRegistrations | length }}</td>
         </tr>
     </table>
+    <a href="{{ path('account_set_up_google_authenticator') }}">Set up Google Authenticator</a>
 {% endblock %}

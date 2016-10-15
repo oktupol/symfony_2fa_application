@@ -1,0 +1,29 @@
+{% extends '::base.html.twig' %}
+
+{% block base_html_body_header_inner %}
+    <h1>Account - Google Authenticator</h1>
+{% endblock %}
+
+{% block base_html_body_content_inner %}
+    {{ form_start(form) }}
+    <fieldset>
+        <legend>Google Authenticator</legend>
+        <div class="input-row">Step 1: Scan this QR-code to add the authenticator:</div>
+        <div class="input-row"><img src="{{ qr_url }}"></div>
+        <div class="input-row">Step 2: Verify your authenticator code</div>
+        <div class="input-row">
+            {{ form_errors(form.authenticator_code) }}
+            {{ form_label(form.authenticator_code) }}
+            {{ form_widget(form.authenticator_code) }}
+        </div>
+        <div class="input-row">Step 3: Write down these backup-codes:
+            <ul>
+                {% for backupCode in user.backupCodes %}
+                    <li>{{ backupCode.code }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </fieldset>
+    {{ form_end(form) }}
+    <a href="{{ path('account_index') }}">Back</a>
+{% endblock %}

@@ -81,3 +81,4 @@ scheb_two_factor:
         enabled: true
         server_name: example.com
         issuer: auth_project
+        template: security/google_2fa.html.twig

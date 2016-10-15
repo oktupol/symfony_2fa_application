@@ -215,7 +215,6 @@ class User implements AdvancedUserInterface, TwoFactorInterface, TrustedComputer
 
     public function eraseCredentials()
     {
-        $this->password = '';
     }
 
     /**
