@@ -35,7 +35,7 @@ class U2FRegistration
 
     /**
      * @var string $publicKey
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string")
      */
     private $publicKey;
 

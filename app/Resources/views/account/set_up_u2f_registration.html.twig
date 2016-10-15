@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block base_html_body_content_inner %}
+    <h2>Insert and activate your key now</h2>
     Challenge:
     <pre>
         {{ challenge | json_encode }}
@@ -13,6 +14,7 @@
     <pre>
         {{ signs | json_encode }}
     </pre>
+    {{ form(form) }}
 {% endblock %}
 
 {% block base_html_body_javascripts %}
@@ -23,8 +25,10 @@
                     appId = '{{ appId | raw }}',
                     signs = {{ signs | json_encode | raw }};
 
-            u2f.register(appId, [challenge], [], function (deviceResponse) {
-                console.log(deviceResponse);
+            u2f.register(appId, [challenge], signs, function (deviceResponse) {
+                var responseInput = document.getElementById('form_response_input');
+                responseInput.value = JSON.stringify(deviceResponse);
+                responseInput.form.submit();
             });
         })(u2f);
     </script>

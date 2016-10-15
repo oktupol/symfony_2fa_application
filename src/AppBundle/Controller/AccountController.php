@@ -27,7 +27,7 @@ class AccountController extends Controller
      * @Route("/account/index", name="account_index")
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request) : Response
     {
         $user = $this->getUser();
         return $this->render('account/index.html.twig', array(
@@ -40,7 +40,7 @@ class AccountController extends Controller
      * @Route("/account/set_up_google_authenticator", name="account_set_up_google_authenticator")
      * @return Response
      */
-    public function setUpGoogleAuthenticatorAction(Request $request)
+    public function setUpGoogleAuthenticatorAction(Request $request) : Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -94,7 +94,7 @@ class AccountController extends Controller
      * @Route("/account/set_up_u2f_registration", name="account_set_up_u2f_registration")
      * @return Response
      */
-    public function setUpU2FRegistrationAction(Request $request)
+    public function setUpU2FRegistrationAction(Request $request) : Response
     {
         $appId = ($request->isSecure() ? 'https' : 'http') . '://' . $this->get('router')->getContext()->getHost();
         $u2fLib = new \u2flib_server\U2F($appId);
@@ -102,15 +102,50 @@ class AccountController extends Controller
         /** @var User $user */
         $user = $this->getUser();
 
+        $registration = new U2FRegistration();
+        $form = $this->getU2FRegistrationForm($registration);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formData = $request->get($form->getName());
+            $challenge = $this->get('session')->get('u2f_challenge');
+
+            $registration->fromU2FRegistration(
+                $u2fLib->doRegister($challenge, json_decode($formData['response_input']))
+            );
+
+            $registration->setUser($user);
+
+            $this->getDoctrine()->getManager()->persist($registration);
+            $this->getDoctrine()->getManager()->flush();
+
+            $this->addFlash('notice', 'Key successfully added');
+            return $this->redirectToRoute('account_index');
+        }
+
         list($challenge, $signs) = $u2fLib->getRegisterData(array_map(function (U2FRegistration $registration) {
             return $registration->toU2FRegistration();
         }, $user->getU2fRegistrations()->toArray()));
+
+        $this->get('session')->set('u2f_challenge', $challenge);
 
         return $this->render('account/set_up_u2f_registration.html.twig', array(
             'appId' => $appId,
             'challenge' => $challenge,
             'signs' => $signs,
-            'user' => $user
+            'user' => $user,
+            'form' => $form->createView()
         ));
+    }
+
+    private function getU2FRegistrationForm(U2FRegistration $registration) : FormInterface
+    {
+        return $this->createFormBuilder($registration)
+            ->setMethod('PATCH')
+            ->add('response_input', HiddenType::class, array(
+                'mapped' => false
+            ))
+            ->getForm();
     }
 }
