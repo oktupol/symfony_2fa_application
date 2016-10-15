@@ -28,7 +28,29 @@
             u2f.register(appId, [challenge], signs, function (deviceResponse) {
                 var responseInput = document.getElementById('form_response_input');
                 responseInput.value = JSON.stringify(deviceResponse);
-                responseInput.form.submit();
+                if (deviceResponse.errorCode !== undefined) {
+                    var error;
+                    switch (deviceResponse.errorCode) {
+                        case 1:
+                            error = 'Unknown error';
+                            break;
+                        case 2:
+                            error = 'There is a problem with the server.';
+                            break;
+                        case 3:
+                            error = 'This configuration is not supported';
+                            break;
+                        case 4:
+                            error = 'This key is already registered with this account';
+                            break;
+                        case 5:
+                            error = 'A timeout occurred while validating the key';
+                            break;
+                    }
+                    alert(error);
+                } else {
+                    responseInput.form.submit();
+                }
             });
         })(u2f);
     </script>

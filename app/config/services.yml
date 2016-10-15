@@ -4,8 +4,11 @@ parameters:
 #    parameter_name: value
 
 services:
+    app.two_factor.u2f:
+        class: AppBundle\Security\TwoFactor\U2FService
+        arguments: ["@router", "@request_stack"]
     app.two_factor.u2f_provider:
         class: AppBundle\Security\TwoFactor\Provider\U2FProvider
-        arguments: ["@templating", "@router"]
+        arguments: ["@templating", "@app.two_factor.u2f", "@form.factory", "@doctrine.orm.entity_manager"]
         tags:
             - { name: scheb_two_factor.provider, alias: u2f }

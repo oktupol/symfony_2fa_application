@@ -96,8 +96,7 @@ class AccountController extends Controller
      */
     public function setUpU2FRegistrationAction(Request $request) : Response
     {
-        $appId = ($request->isSecure() ? 'https' : 'http') . '://' . $this->get('router')->getContext()->getHost();
-        $u2fLib = new \u2flib_server\U2F($appId);
+        $u2fService = $this->get('app.two_factor.u2f');
 
         /** @var User $user */
         $user = $this->getUser();
@@ -109,11 +108,9 @@ class AccountController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $formData = $request->get($form->getName());
-            $challenge = $this->get('session')->get('u2f_challenge');
+            $challenge = $this->get('session')->get('u2f_register_challenge');
 
-            $registration->fromU2FRegistration(
-                $u2fLib->doRegister($challenge, json_decode($formData['response_input']))
-            );
+            $u2fService->doRegister($registration, $challenge, json_decode($formData['response_input']));
 
             $registration->setUser($user);
 
@@ -124,14 +121,12 @@ class AccountController extends Controller
             return $this->redirectToRoute('account_index');
         }
 
-        list($challenge, $signs) = $u2fLib->getRegisterData(array_map(function (U2FRegistration $registration) {
-            return $registration->toU2FRegistration();
-        }, $user->getU2fRegistrations()->toArray()));
+        list($challenge, $signs) = $u2fService->getRegisterData($user);
 
-        $this->get('session')->set('u2f_challenge', $challenge);
+        $this->get('session')->set('u2f_register_challenge', $challenge);
 
         return $this->render('account/set_up_u2f_registration.html.twig', array(
-            'appId' => $appId,
+            'appId' => $u2fService->getAppId(),
             'challenge' => $challenge,
             'signs' => $signs,
             'user' => $user,
