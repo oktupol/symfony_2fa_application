@@ -1,0 +1,29 @@
+section#header {
+  border-bottom: 1px solid #989898;
+  text-align: center;
+}
+section#content {
+  max-width: 800px;
+  margin: 2em auto 0;
+}
+section#footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  .notifications {
+    position: absolute;
+    left: 2em;
+    bottom: 2em;
+    .notification {
+      padding: .4em;
+      border: 1px solid #c0c0c0;
+      margin-top: .4em;
+    }
+  }
+  .logout {
+    position: absolute;
+    right: 2em;
+    bottom: 2em;
+  }
+}

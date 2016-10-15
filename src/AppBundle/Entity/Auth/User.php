@@ -87,7 +87,7 @@ class User implements AdvancedUserInterface, TwoFactorInterface, TrustedComputer
 
     /**
      * @var TrustToken[] $trustTokens
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Auth\TwoFactorAuthentication\TrustToken", mappedBy="users", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Auth\TwoFactorAuthentication\TrustToken", mappedBy="user", cascade={"persist", "remove"})
      */
     private $trustTokens;
 
@@ -108,6 +108,8 @@ class User implements AdvancedUserInterface, TwoFactorInterface, TrustedComputer
      */
     public function __construct()
     {
+        $this->enabled = true;
+
         $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
         $this->trustTokens = new \Doctrine\Common\Collections\ArrayCollection();
         $this->backupCodes = new \Doctrine\Common\Collections\ArrayCollection();
@@ -223,7 +225,7 @@ class User implements AdvancedUserInterface, TwoFactorInterface, TrustedComputer
     {
         return array_map(function (Role $role) {
             return $role->getName();
-        }, $this->roles);
+        }, $this->roles->toArray());
     }
 
     /**

@@ -1,0 +1,5 @@
+{% block base_logout %}
+    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+        <a class="logout" href="{{ path('security_logout') }}">Logout</a>
+    {% endif %}
+{% endblock %}

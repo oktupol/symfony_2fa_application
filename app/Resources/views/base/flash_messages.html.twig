@@ -1,0 +1,9 @@
+{% block base_flash_messages %}
+    <div class="notifications">
+        {% for flash_message in app.session.flashBag.get('notice') %}
+            <div class="notification">
+                {{ flash_message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

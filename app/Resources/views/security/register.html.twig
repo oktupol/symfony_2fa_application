@@ -1,0 +1,27 @@
+{% extends '::base.html.twig' %}
+
+{% block base_html_body_header_inner %}
+    <h1>Register</h1>
+{% endblock %}
+
+{% block base_html_body_content_inner %}
+    {{ form_start(form) }}
+    <fieldset>
+        <legend>Register</legend>
+        <div class="input-row">
+            {{ form_errors(form.username) }}
+            {{ form_label(form.username) }}
+            {{ form_widget(form.username) }}
+        </div>
+        <div class="input-row">
+            {{ form_errors(form.password) }}
+            {{ form_label(form.password) }}
+            {{ form_widget(form.password) }}
+        </div>
+        <div class="input-row">
+            {{ form_row(form.register) }}
+        </div>
+    </fieldset>
+    {{ form_end(form) }}
+    Already have an account? <a href="{{ path('security_login') }}">Login</a> instead!
+{% endblock %}

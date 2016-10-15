@@ -1,13 +1,42 @@
+{% block base_doctype %}
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
-</html>
+{% endblock %}
+{% block base_html_outer %}
+    <html>
+    {% block base_html_inner %}
+        {% block base_html_head_outer %}
+            <head>
+                {% include "base/head.html.twig" %}
+                <title>{% block base_html_head_title %}Auth test site{% endblock %}</title>
+            </head>
+        {% endblock %}
+        {% block base_html_body_outer %}
+            <body>
+            {% block base_html_body_inner %}
+                {% block base_html_body_header_outer %}
+                    <section id="header">
+                        {% block base_html_body_header_inner %}{% endblock %}
+                    </section>
+                {% endblock %}
+                {% block base_html_body_content_outer %}
+                    <section id="content">
+                        {% block base_html_body_content_inner %}{% endblock %}
+                    </section>
+                {% endblock %}
+                {% block base_html_body_footer_outer %}
+                    <section id="footer">
+                        {% block base_html_body_footer_inner %}
+                            {% include "base/flash_messages.html.twig" %}
+                            {% include "base/logout.html.twig" %}
+                        {% endblock %}
+                    </section>
+                {% endblock %}
+            {% endblock %}
+            {% block base_html_body_javascripts %}
+                {% include "base/javascript.html.twig" %}
+            {% endblock %}
+            </body>
+        {% endblock %}
+    {% endblock %}
+    </html>
+{% endblock %}

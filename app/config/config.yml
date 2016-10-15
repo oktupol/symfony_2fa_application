@@ -66,3 +66,18 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+scheb_two_factor:
+    trusted_computer: true
+
+    parameter_names:
+        auth_code: _auth_code
+        trusted: _trusted
+
+    email:
+        enabled: false
+
+    google:
+        enabled: true
+        server_name: example.com
+        issuer: auth_project

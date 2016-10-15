@@ -1,0 +1,35 @@
+{% extends '::base.html.twig' %}
+
+{% block base_html_body_header_inner %}
+    <h1>Login</h1>
+{% endblock %}
+
+{% block base_html_body_content_inner %}
+    <form action="{{ path('security_login') }}" method="post">
+        <fieldset>
+            <legend>Login</legend>
+            {% if last_error %}
+                <div class="input-row">
+                    {{ last_error.messageKey|trans(last_error.messageData, 'security') }}
+                </div>
+            {% endif %}
+            <div class="input-row">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="_username" value="{{ last_username }}" placeholder="Username">
+            </div>
+            <div class="input-row">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="_password" placeholder="Password">
+            </div>
+            <div class="input-row">
+                <label for="remember_me">Keep me logged in</label>
+                <input type="checkbox" id="remember_me" name="_remember_me">
+            </div>
+            <div class="input-row">
+                <button type="submit">Login</button>
+            </div>
+        </fieldset>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        Don't have an account yet? <a href="{{ path('security_register') }}">Register</a> then!
+    </form>
+{% endblock %}
