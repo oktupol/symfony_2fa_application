@@ -68,7 +68,11 @@ swiftmailer:
     spool:     { type: memory }
 
 scheb_two_factor:
-    trusted_computer: true
+    trusted_computer:
+        enabled: true
+        cookie_name: trusted_computer
+        cookie_lifetime: 604800
+        cookie_secure: false
 
     parameter_names:
         auth_code: _auth_code

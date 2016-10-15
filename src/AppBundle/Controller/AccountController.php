@@ -46,6 +46,9 @@ class AccountController extends Controller
         if ($user->getGoogleAuthenticatorSecret() === null) {
             $secret = $this->get('scheb_two_factor.security.google_authenticator')->generateSecret();
             $user->setGoogleAuthenticatorSecret($secret);
+        } else {
+            $this->addFlash('notice', 'There is already an authenticator associated to this account. Please remove it first');
+            return $this->redirectToRoute('account_index');
         }
 
         $form = $this->getGoogleAuthenticatorForm($user);

@@ -299,6 +299,7 @@ class User implements AdvancedUserInterface, TwoFactorInterface, TrustedComputer
         }
 
         $this->trustTokens[] = (new TrustToken())
+            ->setUser($this)
             ->setToken($token)
             ->setExpiry($validUntil);
     }
