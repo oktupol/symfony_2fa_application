@@ -1,0 +1,50 @@
+{% extends '::base.html.twig' %}
+
+{% block base_html_body_header_inner %}
+    <h1>Account</h1>
+{% endblock %}
+
+{% block base_html_body_content_inner %}
+    <table>
+        <tr>
+            <td>Username</td>
+            <td>{{ user.username }}</td>
+        </tr>
+        <tr>
+            <td>Active</td>
+            <td>{% if user.enabled %}yes{% else %}no{% endif %}</td>
+        </tr>
+        <tr>
+            <td>Locks</td>
+            <td>{% if user.lockedUntil is null %}none{% else %}Until {{ user.lockedUntil }}{% endif %}</td>
+        </tr>
+        <tr>
+            <td>Account expiry</td>
+            <td>{% if user.accountExpiry is null %}none{% else %}On {{ user.accountExpiry }}{% endif %}</td>
+        </tr>
+        <tr>
+            <td>Credentials expiry</td>
+            <td>{% if user.credentialsExpiry is null %}none{% else %}On {{ user.credentialsExpiry }}{% endif %}</td>
+        </tr>
+        <tr>
+            <td>Roles</td>
+            <td><ul>{% for role in user.roles %}<li>{{ role }}</li>{% endfor %}</ul></td>
+        </tr>
+        <tr>
+            <td>Google Authenticator secret</td>
+            <td>{% if user.googleAuthenticatorSecret is null %}not set up{% else %}{{ user.googleAuthenticatorSecret }}{% endif %}</td>
+        </tr>
+        <tr>
+            <td>Trust tokens</td>
+            <td>{{ user.trustTokens | length }}</td>
+        </tr>
+        <tr>
+            <td>Backup codes</td>
+            <td><ul>{% for backupCode in user.backupCodes %}<li>{{ backupCode }}</li>{% else %}<li>None</li>{% endfor %}</ul></td>
+        </tr>
+        <tr>
+            <td>U2F registrations</td>
+            <td>{{ user.u2fRegistrations | length }}</td>
+        </tr>
+    </table>
+{% endblock %}
