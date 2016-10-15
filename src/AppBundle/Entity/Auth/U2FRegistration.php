@@ -9,6 +9,7 @@
 namespace AppBundle\Entity\Auth;
 
 use Doctrine\ORM\Mapping as ORM;
+use u2flib_server\Registration;
 
 /**
  * Class U2FRegistration
@@ -185,5 +186,33 @@ class U2FRegistration
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * @return Registration
+     */
+    public function toU2FRegistration() : Registration
+    {
+        $registration = new Registration();
+        $registration->keyHandle = $this->keyHandle;
+        $registration->publicKey = $this->publicKey;
+        $registration->certificate = $this->certificate;
+        $registration->counter = $this->counter;
+
+        return $registration;
+    }
+
+    /**
+     * @param Registration $registration
+     * @return U2FRegistration
+     */
+    public function fromU2FRegistration(Registration $registration) : U2FRegistration
+    {
+        $this->keyHandle = $registration->keyHandle;
+        $this->publicKey = $registration->publicKey;
+        $this->certificate = $registration->certificate;
+        $this->counter = $registration->counter;
+
+        return $this;
     }
 }

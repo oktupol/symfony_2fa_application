@@ -51,5 +51,6 @@
             <td>{{ user.u2fRegistrations | length }}</td>
         </tr>
     </table>
-    <a href="{{ path('account_set_up_google_authenticator') }}">Set up Google Authenticator</a>
+    <a href="{{ path('account_set_up_google_authenticator') }}">Set up Google Authenticator</a><br>
+    <a href="{{ path('account_set_up_u2f_registration') }}">Set up U2F registration</a><br>
 {% endblock %}

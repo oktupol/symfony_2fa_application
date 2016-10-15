@@ -9,6 +9,7 @@
 namespace AppBundle\Controller;
 
 
+use AppBundle\Entity\Auth\U2FRegistration;
 use AppBundle\Entity\Auth\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -86,5 +87,30 @@ class AccountController extends Controller
                 'label' => 'Add authenticator'
             ))
             ->getForm();
+    }
+
+    /**
+     * @param Request $request
+     * @Route("/account/set_up_u2f_registration", name="account_set_up_u2f_registration")
+     * @return Response
+     */
+    public function setUpU2FRegistrationAction(Request $request)
+    {
+        $appId = ($request->isSecure() ? 'https' : 'http') . '://' . $this->get('router')->getContext()->getHost();
+        $u2fLib = new \u2flib_server\U2F($appId);
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        list($challenge, $signs) = $u2fLib->getRegisterData(array_map(function (U2FRegistration $registration) {
+            return $registration->toU2FRegistration();
+        }, $user->getU2fRegistrations()->toArray()));
+
+        return $this->render('account/set_up_u2f_registration.html.twig', array(
+            'appId' => $appId,
+            'challenge' => $challenge,
+            'signs' => $signs,
+            'user' => $user
+        ));
     }
 }
