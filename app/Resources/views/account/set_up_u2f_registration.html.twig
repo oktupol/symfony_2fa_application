@@ -44,8 +44,7 @@
                             error = 'This key is already registered with this account';
                             break;
                         case 5:
-                            error = 'A timeout occurred while validating the key';
-                            break;
+                            return;
                     }
                     alert(error);
                 } else {

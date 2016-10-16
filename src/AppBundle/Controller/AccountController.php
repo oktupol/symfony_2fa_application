@@ -118,6 +118,7 @@ class AccountController extends Controller
             $this->getDoctrine()->getManager()->flush();
 
             $this->addFlash('notice', 'Key successfully added');
+            
             return $this->redirectToRoute('account_index');
         }
 

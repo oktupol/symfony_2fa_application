@@ -279,7 +279,8 @@ class User implements AdvancedUserInterface, TwoFactorInterface, TrustedComputer
     {
         foreach ($this->trustTokens as $trustToken) {
             if ($trustToken->getToken() === $token) {
-                return true;
+                $now = new \DateTime();
+                return $trustToken->getExpiry() >= $now;
             }
         }
         return false;
