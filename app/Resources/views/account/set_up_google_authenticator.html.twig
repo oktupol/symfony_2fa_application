@@ -10,6 +10,7 @@
         <legend>Google Authenticator</legend>
         <div class="input-row">Step 1: Scan this QR-code to add the authenticator:</div>
         <div class="input-row"><img src="{{ qr_url }}"></div>
+        <div class="input-row">Alternatively, type your secret manually: <pre>{{ secret }}</pre></div>
         <div class="input-row">Step 2: Verify your authenticator code</div>
         <div class="input-row">
             {{ form_errors(form.authenticator_code) }}

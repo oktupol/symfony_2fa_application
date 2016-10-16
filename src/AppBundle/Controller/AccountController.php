@@ -78,6 +78,7 @@ class AccountController extends Controller
         }
 
         return $this->render('account/set_up_google_authenticator.html.twig', array(
+            'secret' => $secret,
             'qr_url' => $this->get('scheb_two_factor.security.google_authenticator')->getUrl($user),
             'form' => $form->createView(),
             'user' => $user
