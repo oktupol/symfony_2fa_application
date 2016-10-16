@@ -21,6 +21,7 @@
             <button id="skip-u2f" type="button">Use different 2FA method</button>
         </div>
     </fieldset>
+    <a href="{{ path('security_logout') }}">Cancel</a>
     {{ form_widget(form) }}
     {{ form_end(form) }}
 {% endblock %}
