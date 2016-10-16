@@ -9,6 +9,7 @@
 namespace AppBundle\Controller;
 
 
+use AppBundle\Entity\Auth\TwoFactorAuthentication\BackupCode;
 use AppBundle\Entity\Auth\U2FRegistration;
 use AppBundle\Entity\Auth\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -58,6 +59,14 @@ class AccountController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $authenticatorCode = $request->get($form->getName())['authenticator_code'];
             if ($this->get('scheb_two_factor.security.google_authenticator')->checkCode($user, $authenticatorCode)) {
+                for ($i = count($user->getBackupCodes()), $l = 8; $i < $l; $i++) {
+                    $backupCode = (new BackupCode())
+                        ->setUser($user)
+                        ->setCode(substr(md5(mt_rand()), 0, 12));
+
+                    $user->addBackupCode($backupCode);
+                }
+
                 $this->getDoctrine()->getManager()->persist($user);
                 $this->getDoctrine()->getManager()->flush();
 

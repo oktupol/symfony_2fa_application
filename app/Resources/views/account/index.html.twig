@@ -44,7 +44,7 @@
         </tr>
         <tr>
             <td>Backup codes</td>
-            <td><ul>{% for backupCode in user.backupCodes %}<li>{{ backupCode }}</li>{% else %}<li>None</li>{% endfor %}</ul></td>
+            <td><ul>{% for backupCode in user.backupCodes %}<li>{{ backupCode.code }}</li>{% else %}<li>None</li>{% endfor %}</ul></td>
         </tr>
         <tr>
             <td>U2F registrations</td>

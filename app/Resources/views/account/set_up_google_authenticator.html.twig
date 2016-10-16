@@ -16,13 +16,6 @@
             {{ form_label(form.authenticator_code) }}
             {{ form_widget(form.authenticator_code) }}
         </div>
-        <div class="input-row">Step 3: Write down these backup-codes:
-            <ul>
-                {% for backupCode in user.backupCodes %}
-                    <li>{{ backupCode.code }}</li>
-                {% endfor %}
-            </ul>
-        </div>
     </fieldset>
     {{ form_end(form) }}
     <a href="{{ path('account_index') }}">Back</a>
